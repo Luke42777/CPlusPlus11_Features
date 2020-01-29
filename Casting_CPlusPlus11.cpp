@@ -1,0 +1,44 @@
+#include <iostream>
+
+using namespace std;
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+class Tparent
+{
+
+
+};
+//////////////////////////////////////////////////////////////////////////////////////////////
+class Tbrother: public Tparent
+{
+
+
+};
+//////////////////////////////////////////////////////////////////////////////////////////////
+class Tsister: public Tparent
+{
+
+
+};
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+int main()
+{
+
+   Tparent parent;
+   Tbrother brother1;
+   Tbrother brother2;
+
+  Tparent *ppb = &brother1; //   ppb     pointer parent to brother
+  Tbrother *pbb = &brother2; //  pbb   pointer brother to brother
+
+  //pbb = ppb;
+  pbb = static_cast<Tbrother*>(ppb); //this is error prone, there is no run time checking
+
+  Tparent &&rParent1{Tparent()};
+  Tparent &&rParent2 = static_cast<Tparent &&>(parent);
+
+
+ return 0;
+}
