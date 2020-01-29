@@ -1,44 +1,78 @@
 #include <iostream>
-
 using namespace std;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 class Tparent
 {
+    public:
+   virtual void speak()
+        {
+            cout << "Function speak from Tbrother class" << endl;
+        }
 
 
 };
 //////////////////////////////////////////////////////////////////////////////////////////////
 class Tbrother: public Tparent
 {
-
+public:
 
 };
 //////////////////////////////////////////////////////////////////////////////////////////////
 class Tsister: public Tparent
 {
 
-
 };
 //////////////////////////////////////////////////////////////////////////////////////////////
-
 
 int main()
 {
 
    Tparent parent;
-   Tbrother brother1;
-   Tbrother brother2;
+   Tbrother brother;
+   Tsister sister;
 
-  Tparent *ppb = &brother1; //   ppb     pointer parent to brother
-  Tbrother *pbb = &brother2; //  pbb   pointer brother to brother
+  Tparent *ppb = &brother;
 
+                        ///dynamic_cast does do runtime checking///
   //pbb = ppb;
-  pbb = static_cast<Tbrother*>(ppb); //this is error prone, there is no run time checking
+  Tbrother *pbb = dynamic_cast<Tbrother*>(ppb);// if there is possibly dangerous(ppb pointer is set to parent object)
+                                               // dynamic_cast will set pbb pointer to nullptr
 
-  Tparent &&rParent1{Tparent()};
-  Tparent &&rParent2 = static_cast<Tparent &&>(parent);
+  if(pbb == nullptr)
+  {
+     cout << "Invalid cast";
+  }
+  else
+  {
+      pbb->speak();
+  }
 
+                        ///reinterpret_cast for very weird casting, it pretty cast anything to anything///
+
+ Tsister * pss = dynamic_cast<Tsister*>(ppb);// because ppb is pointing at brother obj dynamic_cast will not let it go
+                                                // and will set pointer to nullptr
+
+  if(pss == nullptr)
+      {
+         cout << "Invalid cast" << endl;
+      }
+  else
+      {
+          pbb->speak();
+      }
+
+
+pss = reinterpret_cast<Tsister*>(ppb);// but if use reinterpret_cast it's ok
+
+if(pss == nullptr)
+      {
+         cout << "Invalid cast" << endl;
+      }
+  else
+      {
+          pbb->speak();
+      }
 
  return 0;
 }
